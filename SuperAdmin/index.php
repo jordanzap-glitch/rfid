@@ -226,7 +226,7 @@ function getBorrowedBookCount($conn) {
         $('#borrowedBooksTable').DataTable({
             "pageLength": 10,
             "lengthMenu": [5, 10, 25, 50, 100],
-            "ordering": true,
+            "ordering": false,
             "searching": false,
             "scrollY": "400px",
             "scrollCollapse": true,

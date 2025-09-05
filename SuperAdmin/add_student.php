@@ -11,15 +11,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $uid       = mysqli_real_escape_string($conn, $_POST['uid']);
     $firstname = mysqli_real_escape_string($conn, $_POST['firstname']);
     $lastname  = mysqli_real_escape_string($conn, $_POST['lastname']);
+    $year      = mysqli_real_escape_string($conn, $_POST['year']);
+    $section   = mysqli_real_escape_string($conn, $_POST['section']);
     $email     = mysqli_real_escape_string($conn, $_POST['email']);
     $address   = mysqli_real_escape_string($conn, $_POST['address']);
     $date_created = date("Y-m-d H:i:s");
 
     // Insert into tbl_students
     $sql = "INSERT INTO tbl_students 
-            (uid, firstname, lastname, email, address, eligible_status, date_created) 
+            (uid, firstname, lastname, year, section, email, address, eligible_status, date_created) 
             VALUES 
-            ('$uid', '$firstname', '$lastname', '$email', '$address', 1, '$date_created')";
+            ('$uid', '$firstname', '$lastname', '$year', '$section', '$email', '$address', 1, '$date_created')";
 
     if (mysqli_query($conn, $sql)) {
         // ✅ Update RFID card status to "inuse = 1"
@@ -129,6 +131,23 @@ if (isset($_GET['status'])) {
                         <label for="lastname">Last Name</label>
                         <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Last Name" required disabled>
                     </div>
+
+                    <!-- Year + Section Inline -->
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="year">Grade/Year</label>
+                          <input type="text" class="form-control" id="year" name="year" placeholder="Grade/Year" required disabled>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="section">Section/Course</label>
+                          <input type="text" class="form-control" id="section" name="section" placeholder="Section/Course" required disabled>
+                        </div>
+                      </div>
+                    </div>
+
                     <div class="form-group">
                         <label for="email">Email address</label>
                         <input type="email" class="form-control" id="email" name="email" placeholder="Email" required disabled>
@@ -177,6 +196,8 @@ if (isset($_GET['status'])) {
 
   const firstname = document.getElementById("firstname");
   const lastname = document.getElementById("lastname");
+  const year = document.getElementById("year");
+  const section = document.getElementById("section");
   const email = document.getElementById("email");
   const address = document.getElementById("address");
   const submitBtn = document.getElementById("submit-btn");
@@ -219,6 +240,8 @@ if (isset($_GET['status'])) {
 
                 firstname.disabled = false;
                 lastname.disabled = false;
+                year.disabled = false;
+                section.disabled = false;
                 email.disabled = false;
                 address.disabled = false;
                 submitBtn.disabled = false;
@@ -231,6 +254,8 @@ if (isset($_GET['status'])) {
 
                 firstname.disabled = true;
                 lastname.disabled = true;
+                year.disabled = true;
+                section.disabled = true;
                 email.disabled = true;
                 address.disabled = true;
                 submitBtn.disabled = true;
