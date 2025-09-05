@@ -86,8 +86,8 @@ $studentResult = mysqli_query($conn, $studentQuery);
                         <tr>
                           <th>UID</th>
                           <th>Full Name</th>
-                          <th>Year</th>
-                          <th>Section</th>
+                          <th>Grade/Year</th>
+                          <th>Section/Course</th>
                           <th>Email</th>
                           <th>Address</th>
                           <th>Date Created</th>
@@ -170,11 +170,11 @@ $studentResult = mysqli_query($conn, $studentQuery);
             </div>
             <div class="row">
               <div class="col-md-6 mb-3">
-                <label for="year" class="form-label">Year</label>
+                <label for="year" class="form-label">Grade/Year</label>
                 <input type="text" class="form-control" name="year" id="year" required>
               </div>
               <div class="col-md-6 mb-3">
-                <label for="section" class="form-label">Section</label>
+                <label for="section" class="form-label">Section/Course</label>
                 <input type="text" class="form-control" name="section" id="section" required>
               </div>
             </div>
