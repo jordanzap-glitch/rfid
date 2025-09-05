@@ -119,11 +119,7 @@ $studentResult = mysqli_query($conn, $studentQuery);
                                    title="Edit"></i>
 
                                 <!-- Delete button -->
-                                <a href="?delete_id=<?php echo $row['id']; ?>" 
-                                   onclick="return confirm('Are you sure you want to delete this student?');" 
-                                   title="Delete">
-                                  <i class="fa-solid fa-trash delete"></i>
-                                </a>
+                               
                               </td>
                             </tr>
                           <?php endwhile; ?>

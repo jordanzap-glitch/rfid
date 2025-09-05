@@ -11,44 +11,14 @@
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
           <li class="nav-item">
-            <a class="nav-link" href="index.html">
+            <a class="nav-link" href="index.php">
               <i class="icon-grid menu-icon"></i>
               <span class="menu-title">Dashboard</span>
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#manage-admin" aria-expanded="false" aria-controls="manage-admin">
-              <i class="fa-solid fa-user-gear menu-icon"></i>
-              <span class="menu-title">Manage Admin</span>
-              &nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-angle-right arrow-icon"></i>
-            </a>
-            <div class="collapse" id="manage-admin">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item">
-                  <a class="nav-link" href="add_admin.php">Add Admin</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="table_admin.php">Table</a>
-                </li>
-              </ul>
-            </div>
-          </li>
 
 
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#manage-rfid" aria-expanded="false" aria-controls="anage-rfid">
-              <i class="fa-solid fa-id-card menu-icon"></i>
-              <span class="menu-title">Manage RFID</span>
-              &nbsp;&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-angle-right arrow-icon"></i>
-            </a>
-            <div class="collapse" id="manage-rfid">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item">
-                  <a class="nav-link" href="rfid_auth.php">Register RIFD UID</a>
-                </li>
-              </ul>
-            </div>
-          </li>
+    
 
 
           <li class="nav-item">
