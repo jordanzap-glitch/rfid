@@ -10,7 +10,7 @@ $statusMsg = "";
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['uid']) && !isset($_POST['borrow'])) {
     $uid = mysqli_real_escape_string($conn, $_POST['uid']);
 
-    $sql = "SELECT id, uid, firstname, lastname, email, address, eligible_status
+    $sql = "SELECT id, uid, firstname, lastname, email, address, eligible_status, year, section
             FROM tbl_students 
             WHERE uid = '$uid' LIMIT 1";
     $result = mysqli_query($conn, $sql);
@@ -216,6 +216,16 @@ if ($bookResult && mysqli_num_rows($bookResult) > 0) {
                         <?php else: ?>
                           <p class="fs-6 text-danger fw-bold">Not Eligible to Borrow</p>
                         <?php endif; ?>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <p class="mb-1 fw-semibold text-muted"><i class="mdi mdi-school me-2"></i>Grade/Year</p>
+                        <p class="fs-6 text-dark"><?php echo htmlspecialchars($student['year']); ?></p>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <p class="mb-1 fw-semibold text-muted"><i class="mdi mdi-account-group-outline me-2"></i>Course/Section</p>
+                        <p class="fs-6 text-dark"><?php echo htmlspecialchars($student['section']); ?></p>
                     </div>
                     </div>
                 <?php else: ?>

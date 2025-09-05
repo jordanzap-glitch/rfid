@@ -11,7 +11,7 @@ $loans = [];
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['uid']) && !isset($_POST['return'])) {
     $uid = mysqli_real_escape_string($conn, $_POST['uid']);
 
-    $sql = "SELECT id, uid, firstname, lastname, email, address, eligible_status
+    $sql = "SELECT id, uid, firstname, lastname, email, address, eligible_status, year, section
             FROM tbl_students 
             WHERE uid = '$uid' LIMIT 1";
     $result = mysqli_query($conn, $sql);
@@ -163,6 +163,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['return'])) {
                         <h3 class="mb-1 fw-bold text-dark">
                           &nbsp;&nbsp;&nbsp;<?php echo htmlspecialchars($student['firstname']) . " " . htmlspecialchars($student['lastname']); ?>
                         </h3>
+                        <p class="mb-1 text-muted">&nbsp;&nbsp;&nbsp;<?php echo htmlspecialchars($student['year']) . " - " . htmlspecialchars($student['section']); ?></p>
                         <?php if ($student['eligible_status'] == 1): ?>
                           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="badge bg-success px-3 py-2">Eligible to Borrow</span>
                         <?php else: ?>
@@ -191,6 +192,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['return'])) {
                         <?php else: ?>
                           <p class="fs-6 text-danger fw-bold">Not Eligible to Borrow</p>
                         <?php endif; ?>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                        <p class="mb-1 fw-semibold text-muted">Grade/Year</p>
+                        <p class="fs-6 text-dark"><?php echo htmlspecialchars($student['year']); ?></p>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                        <p class="mb-1 fw-semibold text-muted">Course/Section</p>
+                        <p class="fs-6 text-dark"><?php echo htmlspecialchars($student['section']); ?></p>
                       </div>
                     </div>
 
