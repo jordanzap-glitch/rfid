@@ -10,7 +10,7 @@ $statusMsg = "";
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['uid']) && !isset($_POST['borrow'])) {
     $uid = mysqli_real_escape_string($conn, $_POST['uid']);
 
-    $sql = "SELECT id, uid, firstname, lastname, email, address, eligible_status, year, section
+    $sql = "SELECT id, uid, firstname, lastname, email, address, eligible_status, year, section, image_path
             FROM tbl_students 
             WHERE uid = '$uid' LIMIT 1";
     $result = mysqli_query($conn, $sql);
@@ -91,6 +91,14 @@ if ($bookResult && mysqli_num_rows($bookResult) > 0) {
 <head>
   <?php include "partials/head.php";?>
  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+ <style>
+   .profile-img {
+     width: 120px;
+     height: 120px;
+     object-fit: cover;
+     border-radius: 50%;
+   }
+ </style>
 </head>
 <body>
   <div class="container-scroller">
@@ -151,9 +159,6 @@ if ($bookResult && mysqli_num_rows($bookResult) > 0) {
                         </select>
                         </div>
 
-                    <!-- Counter and Selected Books -->
-                    
-
                     <button type="submit" class="btn btn-primary btn-block">Borrow</button>
                   </form>
 
@@ -177,7 +182,13 @@ if ($bookResult && mysqli_num_rows($bookResult) > 0) {
                 <?php if ($student): ?>
                     <!-- Profile Header -->
                     <div class="d-flex align-items-center mb-4">
-                    <img src="<?php echo !empty($student['photo']) ? htmlspecialchars($student['photo']) : 'static/images/default-avatar.png'; ?>" 
+                    <img src="<?php 
+                        if (!empty($student['image_path'])) {
+                            echo '../uploads/' . htmlspecialchars($student['image_path']);
+                        } else {
+                            echo 'static/images/default-avatar.png';
+                        }
+                        ?>" 
                         alt="Profile Photo" class="profile-img me-4 border border-3 border-primary shadow-sm">
 
                     <div class="text-start">

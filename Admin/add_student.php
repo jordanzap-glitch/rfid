@@ -17,11 +17,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $address   = mysqli_real_escape_string($conn, $_POST['address']);
     $date_created = date("Y-m-d H:i:s");
 
+    // Handle file upload
+    $imagePath = "";
+    if (isset($_FILES["profile_image"]) && $_FILES["profile_image"]["error"] == 0) {
+        $targetDir = "../uploads/";
+        if (!file_exists($targetDir)) {
+            mkdir($targetDir, 0777, true);
+        }
+
+        $fileName = time() . "_" . basename($_FILES["profile_image"]["name"]);
+        $targetFilePath = $targetDir . $fileName;
+        $fileType = strtolower(pathinfo($targetFilePath, PATHINFO_EXTENSION));
+
+        // Allow only image types
+        $allowedTypes = array("jpg","jpeg","png","gif");
+        if (in_array($fileType, $allowedTypes)) {
+            if (move_uploaded_file($_FILES["profile_image"]["tmp_name"], $targetFilePath)) {
+                $imagePath = $targetFilePath;
+            }
+        }
+    }
+
     // Insert into tbl_students
     $sql = "INSERT INTO tbl_students 
-            (uid, firstname, lastname, year, section, email, address, eligible_status, date_created) 
+            (uid, firstname, lastname, year, section, email, address, image_path, eligible_status, date_created) 
             VALUES 
-            ('$uid', '$firstname', '$lastname', '$year', '$section', '$email', '$address', 1, '$date_created')";
+            ('$uid', '$firstname', '$lastname', '$year', '$section', '$email', '$address', '$imagePath', 1, '$date_created')";
 
     if (mysqli_query($conn, $sql)) {
         // ✅ Update RFID card status to "inuse = 1"
@@ -85,7 +106,7 @@ if (isset($_GET['status'])) {
           <?php if ($statusMsg) echo $statusMsg; ?>
 
           <!-- Start form -->
-          <form class="forms-sample w-100" method="POST" action="">
+          <form class="forms-sample w-100" method="POST" action="" enctype="multipart/form-data">
             <div class="row">
 
               <!-- Left column: RFID UID card -->
@@ -156,6 +177,13 @@ if (isset($_GET['status'])) {
                         <label for="address">Address</label>
                         <input type="text" class="form-control" id="address" name="address" placeholder="Address" required disabled>
                     </div>
+
+                    <!-- Profile Image Upload -->
+                    <div class="form-group">
+                        <label for="profile_image">Profile Picture</label>
+                        <input type="file" class="form-control" id="profile_image" name="profile_image" accept="image/*" disabled>
+                    </div>
+
                     <button type="submit" class="btn btn-primary mr-2" disabled id="submit-btn">Submit</button>
                     <button type="reset" class="btn btn-light">Cancel</button>
                     </div>
@@ -200,6 +228,7 @@ if (isset($_GET['status'])) {
   const section = document.getElementById("section");
   const email = document.getElementById("email");
   const address = document.getElementById("address");
+  const profileImage = document.getElementById("profile_image");
   const submitBtn = document.getElementById("submit-btn");
 
   let scanning = false;
@@ -244,6 +273,7 @@ if (isset($_GET['status'])) {
                 section.disabled = false;
                 email.disabled = false;
                 address.disabled = false;
+                profileImage.disabled = false;
                 submitBtn.disabled = false;
               } else {
                 rfidCircle.classList.remove("green");
@@ -258,6 +288,7 @@ if (isset($_GET['status'])) {
                 section.disabled = true;
                 email.disabled = true;
                 address.disabled = true;
+                profileImage.disabled = true;
                 submitBtn.disabled = true;
               }
             });

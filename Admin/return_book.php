@@ -11,7 +11,7 @@ $loans = [];
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['uid']) && !isset($_POST['return'])) {
     $uid = mysqli_real_escape_string($conn, $_POST['uid']);
 
-    $sql = "SELECT id, uid, firstname, lastname, email, address, eligible_status, year, section
+    $sql = "SELECT id, uid, firstname, lastname, email, address, eligible_status, year, section, image_path
             FROM tbl_students 
             WHERE uid = '$uid' LIMIT 1";
     $result = mysqli_query($conn, $sql);
@@ -156,14 +156,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['return'])) {
                   <div id="profile-content" style="display:<?php echo $student ? 'block' : 'none'; ?>;">
                   <?php if ($student): ?>
                     <div class="d-flex align-items-center mb-4">
-                      <img src="<?php echo !empty($student['photo']) ? htmlspecialchars($student['photo']) : 'static/images/default-avatar.png'; ?>" 
+                      <?php
+                        $photoPath = !empty($student['image_path']) ? "../uploads/" . htmlspecialchars($student['image_path']) : "static/images/default-avatar.png";
+                      ?>
+                      <img src="<?php echo $photoPath; ?>" 
                         alt="Profile Photo" class="profile-img me-4 border border-3 border-primary shadow-sm">
 
                       <div class="text-start">
                         <h3 class="mb-1 fw-bold text-dark">
                           &nbsp;&nbsp;&nbsp;<?php echo htmlspecialchars($student['firstname']) . " " . htmlspecialchars($student['lastname']); ?>
-                        </h3>
-                        <p class="mb-1 text-muted">&nbsp;&nbsp;&nbsp;<?php echo htmlspecialchars($student['year']) . " - " . htmlspecialchars($student['section']); ?></p>
+                  </h3>
                         <?php if ($student['eligible_status'] == 1): ?>
                           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="badge bg-success px-3 py-2">Eligible to Borrow</span>
                         <?php else: ?>

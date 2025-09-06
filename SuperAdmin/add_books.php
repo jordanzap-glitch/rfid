@@ -7,12 +7,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Get form values and sanitize
     $title = mysqli_real_escape_string($conn, $_POST['title']);
     $description = mysqli_real_escape_string($conn, $_POST['description']);
+    $genre = mysqli_real_escape_string($conn, $_POST['genre']);
     $status = mysqli_real_escape_string($conn, $_POST['status']);
     $date_created = date("Y-m-d H:i:s");
 
     // Insert into database
-    $query = "INSERT INTO tbl_books (title, description, status, date_created) 
-              VALUES ('$title', '$description', '$status', '$date_created')";
+    $query = "INSERT INTO tbl_books (title, description, genre, status, date_created) 
+              VALUES ('$title', '$description', '$genre', '$status', '$date_created')";
     if (mysqli_query($conn, $query)) {
         $message = "<div class='alert alert-success'>✅ Book Added successfully!</div>";
     } else {
@@ -65,6 +66,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <div class="form-group">
                       <label for="description">Description</label>
                       <textarea class="form-control" id="description" name="description" rows="4" placeholder="Enter description" required></textarea>
+                    </div>
+
+                    <!-- Genre -->
+                    <div class="form-group">
+                      <label for="genre">Genre</label>
+                      <select class="form-control" id="genre" name="genre" required>
+                        <option value="">-- Select Genre --</option>
+                        <option value="BSIS COLLEGE">BSIS COLLEGE</option>
+                        <option value="COLLEGE ENTREP">COLLEGE ENTREP</option>
+                        <option value="COLLEGE FOREIGN">COLLEGE FOREIGN</option>
+                        <option value="TAGALOG COLLEGE">TAGALOG COLLEGE</option>
+                        <option value="FILIPINIANA COLLEGE">FILIPINIANA COLLEGE</option>
+                        <option value="FILIPINO-TAGALOG HIGH SCHOOL">FILIPINO-TAGALOG HIGH SCHOOL</option>
+                        <option value="FILIPINIANA HIGH SCHOOL">FILIPINIANA HIGH SCHOOL</option>
+                        <option value="FORIEGN HIGH SCHOOL">FORIEGN HIGH SCHOOL</option>
+                        <option value="KAPAMPANGAN SHS">KAPAMPANGAN SHS</option>
+                        <option value="SHS FOREIGN">SHS FOREIGN</option>
+                      </select>
                     </div>
 
                     <!-- Status -->

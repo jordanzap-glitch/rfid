@@ -100,7 +100,7 @@
 
 
     <!-- Features Start -->
-    <div class="container-fluid pt-6 pb-6">
+     <div class="container-fluid pt-6 pb-6">
         <div class="container pt-4">
             <div class="row g-0 feature-row wow fadeIn" data-wow-delay="0.1s">
                 <div class="col-md-6 col-lg-3 wow fadeIn" data-wow-delay="0.3s">
@@ -109,7 +109,7 @@
                             <i class="fa fa-hammer fa-2x text-white"></i>
                         </div>
                         <div class="p-5 pt-0">
-                            <h5 class="text-uppercase mb-3">Quality Welding</h5>
+                            <h5 class="text-uppercase mb-3">change</h5>
                             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur tellus augue.</p>
                             <a class="position-relative text-body text-uppercase small d-flex justify-content-between"
                                 href="#"><b class="bg-white pe-3">Read More</b> <i
@@ -123,7 +123,7 @@
                             <i class="fa fa-dollar-sign fa-2x text-white"></i>
                         </div>
                         <div class="p-5 pt-0">
-                            <h5 class="text-uppercase">Affordable Pricing</h5>
+                            <h5 class="text-uppercase">change</h5>
                             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur tellus augue.</p>
                             <a class="position-relative text-body text-uppercase small d-flex justify-content-between"
                                 href="#"><b class="bg-white pe-3">Read More</b> <i
@@ -137,7 +137,7 @@
                             <i class="fa fa-check-double fa-2x text-white"></i>
                         </div>
                         <div class="p-5 pt-0">
-                            <h5 class="text-uppercase">Best Welder</h5>
+                            <h5 class="text-uppercase">change</h5>
                             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur tellus augue.</p>
                             <a class="position-relative text-body text-uppercase small d-flex justify-content-between"
                                 href="#"><b class="bg-white pe-3">Read More</b> <i
@@ -151,7 +151,7 @@
                             <i class="fa fa-tools fa-2x text-white"></i>
                         </div>
                         <div class="p-5 pt-0">
-                            <h5 class="text-uppercase">Quality Tools</h5>
+                            <h5 class="text-uppercase">change</h5>
                             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur tellus augue.</p>
                             <a class="position-relative text-body text-uppercase small d-flex justify-content-between"
                                 href="#"><b class="bg-white pe-3">Read More</b> <i
@@ -378,13 +378,13 @@
     <div class="container-fluid team pt-6 pb-6">
         <div class="container">
             <div class="text-center mx-auto wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
-                <h1 class="display-6 text-uppercase mb-5">Meet Our Professional and Experience Welder</h1>
+                <h1 class="display-6 text-uppercase mb-5">Library Staff</h1>
             </div>
             <div class="row g-4">
                 <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
                     <div class="team-item">
                         <div class="position-relative overflow-hidden">
-                            <img class="img-fluid w-100" src="img/team-1.jpg" alt="">
+                            <img class="img-fluid w-100" src="change" alt="">
                             <div class="team-social">
                                 <a class="btn btn-square btn-dark mx-1" href=""><i class="fab fa-facebook-f"></i></a>
                                 <a class="btn btn-square btn-dark mx-1" href=""><i class="fab fa-twitter"></i></a>
@@ -393,15 +393,15 @@
                             </div>
                         </div>
                         <div class="text-center p-4">
-                            <h5 class="mb-1">Alex Robin</h5>
-                            <span>Welder</span>
+                            <h5 class="mb-1">Marita G. Valerio, RL, MALIS</h5>
+                            <span>Cosultant, Library Programs and Services</span>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.4s">
                     <div class="team-item">
                         <div class="position-relative overflow-hidden">
-                            <img class="img-fluid w-100" src="img/team-2.jpg" alt="">
+                            <img class="img-fluid w-100" src="Change" alt="">
                             <div class="team-social">
                                 <a class="btn btn-square btn-dark mx-1" href=""><i class="fab fa-facebook-f"></i></a>
                                 <a class="btn btn-square btn-dark mx-1" href=""><i class="fab fa-twitter"></i></a>
@@ -410,15 +410,15 @@
                             </div>
                         </div>
                         <div class="text-center p-4">
-                            <h5 class="mb-1">Andrew Bon</h5>
-                            <span>Welder</span>
+                            <h5 class="mb-1">Kurl Bryan L. Duque, LPT</h5>
+                            <span>Assistant Librarian</span>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
                     <div class="team-item">
                         <div class="position-relative overflow-hidden">
-                            <img class="img-fluid w-100" src="img/team-3.jpg" alt="">
+                            <img class="img-fluid w-100" src="change" alt="">
                             <div class="team-social">
                                 <a class="btn btn-square btn-dark mx-1" href=""><i class="fab fa-facebook-f"></i></a>
                                 <a class="btn btn-square btn-dark mx-1" href=""><i class="fab fa-twitter"></i></a>
@@ -427,15 +427,15 @@
                             </div>
                         </div>
                         <div class="text-center p-4">
-                            <h5 class="mb-1">Martin Tompson</h5>
-                            <span>Welder</span>
+                            <h5 class="mb-1">Mr. John Dexter Garcia</h5>
+                            <span>Library Technician</span>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.6s">
                     <div class="team-item">
                         <div class="position-relative overflow-hidden">
-                            <img class="img-fluid w-100" src="img/team-4.jpg" alt="">
+                            <img class="img-fluid w-100" src="change" alt="">
                             <div class="team-social">
                                 <a class="btn btn-square btn-dark mx-1" href=""><i class="fab fa-facebook-f"></i></a>
                                 <a class="btn btn-square btn-dark mx-1" href=""><i class="fab fa-twitter"></i></a>
@@ -444,8 +444,8 @@
                             </div>
                         </div>
                         <div class="text-center p-4">
-                            <h5 class="mb-1">Clarabelle Samber</h5>
-                            <span>Welder</span>
+                            <h5 class="mb-1">Ms. Diana Rose B. Ronquillo</h5>
+                            <span>Library Staff</span>
                         </div>
                     </div>
                 </div>
@@ -461,28 +461,7 @@
 
 
     <!-- Newsletter Start -->
-    <div class="container-fluid newsletter mt-6 wow fadeIn" data-wow-delay="0.1s">
-        <div class="container pb-5">
-            <div class="bg-white p-5 mb-5">
-                <div class="row g-5">
-                    <div class="col-md-6 wow fadeIn" data-wow-delay="0.3s">
-                        <h1 class="display-6 text-uppercase mb-4">Newsletter</h1>
-                        <div class="d-flex">
-                            <i class="far fa-envelope-open fa-3x text-primary me-4"></i>
-                            <p class="fs-5 fst-italic mb-0">Dolores sed duo clita tempor justo dolor et stet lorem kasd labore lorem ipsum.</p>
-                        </div>
-                    </div>
-                    <div class="col-md-6 wow fadeIn" data-wow-delay="0.5s">
-                        <div class="form-floating mb-3">
-                            <input type="email" class="form-control border-0 bg-light" id="mail" placeholder="Your Email">
-                            <label for="mail">Your Email</label>
-                        </div>
-                        <button class="btn btn-primary w-100 py-3" type="submit">Submit Now</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    
     <!-- Newsletter Start -->
 
 
