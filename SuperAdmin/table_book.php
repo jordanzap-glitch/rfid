@@ -22,9 +22,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['edit_id'])) {
     $title = mysqli_real_escape_string($conn, $_POST['title']);
     $description = mysqli_real_escape_string($conn, $_POST['description']);
     $status = mysqli_real_escape_string($conn, $_POST['status']);
+    $genre_id = intval($_POST['genre']); // store genre_id instead of genre name
 
     $updateQuery = "UPDATE tbl_books 
-                    SET title='$title', description='$description', status='$status' 
+                    SET title='$title', description='$description', status='$status', genre_id=$genre_id 
                     WHERE id=$editId";
 
     if (mysqli_query($conn, $updateQuery)) {
@@ -34,9 +35,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['edit_id'])) {
     }
 }
 
-// ✅ Fetch book records
-$bookQuery = "SELECT id, title, description, status, date_created FROM tbl_books ORDER BY date_created DESC";
+// ✅ Fetch book records with JOIN to get genre name
+$bookQuery = "SELECT b.id, b.title, b.description, b.status, b.date_created, g.genre_name 
+              FROM tbl_books b 
+              LEFT JOIN tbl_genre g ON b.genre_id = g.id 
+              ORDER BY b.date_created DESC";
 $bookResult = mysqli_query($conn, $bookQuery);
+
+// ✅ Fetch all genres for dropdown
+$genreQuery = "SELECT id, genre_name FROM tbl_genre ORDER BY genre_name ASC";
+$genreResult = mysqli_query($conn, $genreQuery);
+
+// ✅ Helper function to shorten description
+function shortenText($text, $limit = 10) {
+    $words = explode(" ", $text);
+    if (count($words) > $limit) {
+        return implode(" ", array_slice($words, 0, $limit)) . " ...";
+    }
+    return $text;
+}
 ?>
 
 <!DOCTYPE html>
@@ -101,6 +118,7 @@ $bookResult = mysqli_query($conn, $bookQuery);
                           <th>Title</th>
                           <th>Description</th>
                           <th>Status</th>
+                          <th>Genre</th>
                           <th>Date Created</th>
                           <th>Action</th>
                         </tr>
@@ -110,7 +128,7 @@ $bookResult = mysqli_query($conn, $bookQuery);
                           <?php while ($row = mysqli_fetch_assoc($bookResult)): ?>
                             <tr>
                               <td><?php echo htmlspecialchars($row['title']); ?></td>
-                              <td><?php echo htmlspecialchars($row['description']); ?></td>
+                              <td><?php echo htmlspecialchars(shortenText($row['description'], 10)); ?></td>
                               <td>
                                 <?php if ($row['status'] == 'available'): ?>
                                   <span class="badge-available"><i class="fa-solid fa-check"></i> Available</span>
@@ -118,6 +136,7 @@ $bookResult = mysqli_query($conn, $bookQuery);
                                   <span class="badge-unavailable"><i class="fa-solid fa-times"></i> Unavailable</span>
                                 <?php endif; ?>
                               </td>
+                              <td><?php echo htmlspecialchars($row['genre_name']); ?></td>
                               <td><?php echo htmlspecialchars($row['date_created']); ?></td>
                               <td class="action-icons">
                                 <!-- Edit button -->
@@ -126,20 +145,20 @@ $bookResult = mysqli_query($conn, $bookQuery);
                                    data-title="<?php echo htmlspecialchars($row['title']); ?>"
                                    data-description="<?php echo htmlspecialchars($row['description']); ?>"
                                    data-status="<?php echo htmlspecialchars($row['status']); ?>"
+                                   data-genre="<?php echo htmlspecialchars($row['genre_name']); ?>"
                                    title="Edit"></i>
 
                                 <!-- Delete button -->
                                 <a href="?delete_id=<?php echo $row['id']; ?>" 
-                                   onclick="return confirm('Are you sure you want to delete this book?');" 
-                                   title="Delete">
-                                  <i class="fa-solid fa-trash delete"></i>
+                                   onclick="return confirm('Are you sure you want to delete this book?');">
+                                   <i class="fa-solid fa-trash delete" title="Delete"></i>
                                 </a>
                               </td>
                             </tr>
                           <?php endwhile; ?>
                         <?php else: ?>
                           <tr>
-                            <td colspan="5" class="text-center">No book records found.</td>
+                            <td colspan="6" class="text-center">No book records found.</td>
                           </tr>
                         <?php endif; ?>
                       </tbody>
@@ -185,6 +204,20 @@ $bookResult = mysqli_query($conn, $bookQuery);
               <select class="form-control" name="status" id="status" required>
                 <option value="available">Available</option>
                 <option value="unavailable">Unavailable</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="genre" class="form-label">Genre</label>
+              <select class="form-control" name="genre" id="genre" required>
+                <?php if ($genreResult && mysqli_num_rows($genreResult) > 0): ?>
+                  <?php while ($g = mysqli_fetch_assoc($genreResult)): ?>
+                    <option value="<?php echo $g['id']; ?>">
+                      <?php echo htmlspecialchars($g['genre_name']); ?>
+                    </option>
+                  <?php endwhile; ?>
+                <?php else: ?>
+                  <option value="">No genres available</option>
+                <?php endif; ?>
               </select>
             </div>
           </div>
@@ -238,11 +271,19 @@ $bookResult = mysqli_query($conn, $bookQuery);
             var title = $(this).data("title");
             var description = $(this).data("description");
             var status = $(this).data("status");
+            var genreName = $(this).data("genre");
 
             $("#edit_id").val(id);
             $("#title").val(title);
             $("#description").val(description);
             $("#status").val(status);
+
+            // Set genre dropdown by matching text
+            $("#genre option").each(function() {
+                if ($(this).text() === genreName) {
+                    $(this).prop("selected", true);
+                }
+            });
 
             var modal = new bootstrap.Modal(document.getElementById('editBookModal'));
             modal.show();

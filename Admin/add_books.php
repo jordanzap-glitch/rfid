@@ -7,17 +7,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Get form values and sanitize
     $title = mysqli_real_escape_string($conn, $_POST['title']);
     $description = mysqli_real_escape_string($conn, $_POST['description']);
-    $genre = mysqli_real_escape_string($conn, $_POST['genre']);
+    $genre_id = (int) $_POST['genre']; // now this is the ID
     $status = mysqli_real_escape_string($conn, $_POST['status']);
     $date_created = date("Y-m-d H:i:s");
 
     // Insert into database
-    $query = "INSERT INTO tbl_books (title, description, genre, status, date_created) 
-              VALUES ('$title', '$description', '$genre', '$status', '$date_created')";
+    $query = "INSERT INTO tbl_books (title, description, genre_id, status, date_created) 
+              VALUES ('$title', '$description', '$genre_id', '$status', '$date_created')";
     if (mysqli_query($conn, $query)) {
         $message = "<div class='alert alert-success'>✅ Book Added successfully!</div>";
     } else {
         $message = "<div class='alert alert-danger'>Error: " . mysqli_error($conn) . "</div>";
+    }
+}
+
+// Fetch genres from tbl_genre
+$genres = [];
+$result = mysqli_query($conn, "SELECT id, genre_name FROM tbl_genre ORDER BY genre_name ASC");
+if ($result && mysqli_num_rows($result) > 0) {
+    while ($row = mysqli_fetch_assoc($result)) {
+        $genres[] = $row;
     }
 }
 ?>
@@ -73,16 +82,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                       <label for="genre">Genre</label>
                       <select class="form-control" id="genre" name="genre" required>
                         <option value="">-- Select Genre --</option>
-                        <option value="BSIS COLLEGE">BSIS COLLEGE</option>
-                        <option value="COLLEGE ENTREP">COLLEGE ENTREP</option>
-                        <option value="COLLEGE FOREIGN">COLLEGE FOREIGN</option>
-                        <option value="TAGALOG COLLEGE">TAGALOG COLLEGE</option>
-                        <option value="FILIPINIANA COLLEGE">FILIPINIANA COLLEGE</option>
-                        <option value="FILIPINO-TAGALOG HIGH SCHOOL">FILIPINO-TAGALOG HIGH SCHOOL</option>
-                        <option value="FILIPINIANA HIGH SCHOOL">FILIPINIANA HIGH SCHOOL</option>
-                        <option value="FORIEGN HIGH SCHOOL">FORIEGN HIGH SCHOOL</option>
-                        <option value="KAPAMPANGAN SHS">KAPAMPANGAN SHS</option>
-                        <option value="SHS FOREIGN">SHS FOREIGN</option>
+                        <?php foreach ($genres as $g): ?>
+                          <option value="<?php echo $g['id']; ?>">
+                            <?php echo htmlspecialchars($g['genre_name']); ?>
+                          </option>
+                        <?php endforeach; ?>
                       </select>
                     </div>
 
