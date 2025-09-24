@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 24, 2025 at 07:16 AM
+-- Generation Time: Sep 24, 2025 at 11:21 AM
 -- Server version: 12.0.2-MariaDB
 -- PHP Version: 8.2.12
 
@@ -37,14 +37,6 @@ CREATE TABLE `tbl_admin` (
   `date_created` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `tbl_admin`
---
-
-INSERT INTO `tbl_admin` (`id`, `firstname`, `lastname`, `email`, `username`, `password`, `date_created`) VALUES
-(1, 'jordan', 'zapantaa', 'jordan@gmail.com', 'jordan', '123', '2025-09-04'),
-(2, 'asd', 'asd', 'asd@gmail.com', 'asd', 'asd', '2025-09-05');
-
 -- --------------------------------------------------------
 
 --
@@ -53,8 +45,7 @@ INSERT INTO `tbl_admin` (`id`, `firstname`, `lastname`, `email`, `username`, `pa
 
 CREATE TABLE `tbl_attendance` (
   `id` int(100) NOT NULL,
-  `student_id` int(50) DEFAULT NULL,
-  `regular_id` int(100) DEFAULT NULL,
+  `user_id` varchar(100) DEFAULT NULL,
   `time_in` timestamp NULL DEFAULT NULL,
   `time_out` timestamp NULL DEFAULT NULL,
   `status` varchar(50) DEFAULT NULL
@@ -80,9 +71,9 @@ CREATE TABLE `tbl_books` (
 --
 
 INSERT INTO `tbl_books` (`id`, `title`, `description`, `genre_id`, `status`, `date_created`) VALUES
-(9, 'programming', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.', 1, 'available', '2025-09-06'),
+(9, 'programming', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.', 1, 'unavailable', '2025-09-06'),
 (10, 'A course module for ethics', 'An ethics course module provides an overview of the study of human conduct and moral principles, examining the nature of right and wrong, good and bad, and the justification of moral beliefs.\r\n It typically explores foundational concepts such as morality, ethical standards, and the distinction between moral and non-moral issues.\r\n', 2, 'available', '2025-09-06'),
-(11, 'Developing your Personality', ' A book on developing your personality is that it serves as a practical guide to cultivating and expressing one\'s unique personality in daily life, focusing on self-awareness, self-confidence, communication skills, and personal growth through exercises and real-life examples.\r\n', 3, 'available', '2025-09-06'),
+(11, 'Developing your Personality', ' A book on developing your personality is that it serves as a practical guide to cultivating and expressing one\'s unique personality in daily life, focusing on self-awareness, self-confidence, communication skills, and personal growth through exercises and real-life examples.\r\n', 3, 'unavailable', '2025-09-06'),
 (12, 'Sariling Wika at Pilosopiyang Filipino ', 'Centers on the critical role of the native language, particularly Filipino, in the development of a distinct and authentic Filipino philosophy. It emphasizes that the use of the national language is not merely a linguistic choice but a vital mechanism for intellectual and cultural empowerment, enabling the expression of complex ideas, truth, and reality in a way that is deeply rooted in the Filipino experience.', 4, 'available', '2025-09-06'),
 (13, 'test', 'test', 7, 'unavailable', '2025-09-06');
 
@@ -148,16 +139,9 @@ CREATE TABLE `tbl_regulars` (
   `address` varchar(20) DEFAULT NULL,
   `eligible_status` varchar(2) DEFAULT NULL,
   `image_path` varchar(100) DEFAULT NULL,
-  `user_type` varchar(10) DEFAULT NULL,
+  `user_type` varchar(20) DEFAULT NULL,
   `date_created` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `tbl_regulars`
---
-
-INSERT INTO `tbl_regulars` (`id`, `uid`, `firstname`, `lastname`, `email`, `address`, `eligible_status`, `image_path`, `user_type`, `date_created`) VALUES
-(6, '2643783428', 'jordan', 'jordan', 'jordan@gmail', 'jordan', '1', '../uploads/1758689914_admin (2).png', 'Teacher', '2025-09-23 22:58:34');
 
 -- --------------------------------------------------------
 
@@ -172,13 +156,6 @@ CREATE TABLE `tbl_rfid_auth` (
   `inuse` int(10) DEFAULT 0,
   `date_created` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `tbl_rfid_auth`
---
-
-INSERT INTO `tbl_rfid_auth` (`id`, `uid`, `status`, `inuse`, `date_created`) VALUES
-(7, '2643783428', 'valid', 1, '2025-09-24');
 
 -- --------------------------------------------------------
 
@@ -195,13 +172,6 @@ CREATE TABLE `tbl_rfid_loan` (
   `borrow_date` timestamp NULL DEFAULT NULL,
   `return_date` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `tbl_rfid_loan`
---
-
-INSERT INTO `tbl_rfid_loan` (`id`, `uid`, `student_id`, `book_id`, `status`, `borrow_date`, `return_date`) VALUES
-(13, '2643783428', 5, 10, 'returned', '2025-09-24 04:41:56', '2025-09-24 04:42:47');
 
 -- --------------------------------------------------------
 
@@ -258,14 +228,6 @@ CREATE TABLE `tbl_user` (
   `user_type` varchar(10) DEFAULT NULL,
   `date_created` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `tbl_user`
---
-
-INSERT INTO `tbl_user` (`id`, `email`, `username`, `password`, `user_type`, `date_created`) VALUES
-(1, 'jordan@gmail.com', 'jordan', '123', 'admin', '2025-09-04'),
-(2, 'asd@gmail.com', 'asd', 'asd', 'admin', '2025-09-05');
 
 --
 -- Indexes for dumped tables
@@ -352,7 +314,7 @@ ALTER TABLE `tbl_admin`
 -- AUTO_INCREMENT for table `tbl_attendance`
 --
 ALTER TABLE `tbl_attendance`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `tbl_books`
@@ -376,7 +338,7 @@ ALTER TABLE `tbl_genre`
 -- AUTO_INCREMENT for table `tbl_regulars`
 --
 ALTER TABLE `tbl_regulars`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `tbl_rfid_auth`
@@ -388,7 +350,7 @@ ALTER TABLE `tbl_rfid_auth`
 -- AUTO_INCREMENT for table `tbl_rfid_loan`
 --
 ALTER TABLE `tbl_rfid_loan`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `tbl_students`
