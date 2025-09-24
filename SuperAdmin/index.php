@@ -131,7 +131,7 @@ function getBorrowedBookCount($conn) {
                     <table id="borrowedBooksTable" class="table table-striped table-borderless">
                       <thead>
                         <tr>
-                          <th>Student Name</th>
+                          <th>Full Name</th>
                           <th>Book Title</th>
                           <th>Borrowed Date</th>
                           <th>Status</th>
@@ -140,13 +140,14 @@ function getBorrowedBookCount($conn) {
                       <tbody>
                         <?php
                         $sql = "SELECT 
-                                  s.firstname, 
-                                  s.lastname, 
+                                  COALESCE(s.firstname, r.firstname) AS firstname, 
+                                  COALESCE(s.lastname, r.lastname) AS lastname,
                                   b.title, 
                                   l.borrow_date, 
-                                  l.status 
+                                  l.status
                                 FROM tbl_rfid_loan l
-                                INNER JOIN tbl_students s ON l.student_id = s.id
+                                LEFT JOIN tbl_students s ON l.student_id = s.id
+                                LEFT JOIN tbl_regulars r ON l.student_id = r.id
                                 INNER JOIN tbl_books b ON l.book_id = b.id
                                 ORDER BY l.borrow_date DESC";
                         $result = mysqli_query($conn, $sql);
@@ -158,7 +159,6 @@ function getBorrowedBookCount($conn) {
                                 $borrowDate = date("d M Y", strtotime($row['borrow_date']));
                                 $status = $row['status'];
 
-                                // choose badge color based on status
                                 $badgeClass = "badge-warning";
                                 if (strtolower($status) == "returned") {
                                     $badgeClass = "badge-success";
@@ -185,7 +185,6 @@ function getBorrowedBookCount($conn) {
             </div>
           </div>
 
-          <!-- Advanced Table (placeholder removed to clean layout) -->
         </div>
         <!-- content-wrapper ends -->
         <!-- partial:partials/_footer.html -->

@@ -63,7 +63,10 @@
                   <a class="nav-link" href="add_student.php">Add Borrower</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="table_student.php">Table</a>
+                  <a class="nav-link" href="table_student.php">User Table</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="attend_table.php">Attendance Table</a>
                 </li>
               </ul>
             </div>

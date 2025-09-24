@@ -44,7 +44,7 @@ if (isset($_POST['login'])) {
             exit();
         } else {
             // Check in Customer table
-            $query_customer = "SELECT * FROM tbl_customer WHERE (email = '$username' OR username = '$username') AND password = '$password'";
+            $query_customer = "SELECT * FROM tbl_customuser WHERE username = '$username' AND password = '$password'";
             $rs_customer = $conn->query($query_customer);
             $num_customer = $rs_customer->num_rows;
 
@@ -56,7 +56,7 @@ if (isset($_POST['login'])) {
                 $_SESSION['email'] = $rows_customer['email'];
                 $_SESSION['user_type'] = 'customer';
 
-                header('Location:Customer/index.php');
+                header('Location:CustomUser/attendance.php');
                 exit();
             } else {
                 // Invalid login
@@ -111,23 +111,20 @@ ob_end_flush();
                   <input type="text" class="form-control form-control-lg" name="username" placeholder="Username or Email" required>
                 </div>
                 <div class="form-group">
-                  <input type="password" class="form-control form-control-lg" name="password" placeholder="Password" required>
+                  <input type="password" class="form-control form-control-lg" id="password" name="password" placeholder="Password" required>
                 </div>
+                
+                <!-- Show Password Checkbox -->
+                <div class="form-check mb-3">
+                  <input type="checkbox" class="form-check-input" id="showPassword" onclick="togglePassword()">
+                  <label class="form-check-label text-muted" for="showPassword">Show Password</label>
+                </div>
+
                 <div class="mt-3">
                   <button type="submit" name="login" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn">SIGN IN</button>
                 </div>
-                <div class="my-2 d-flex justify-content-between align-items-center">
-                  <div class="form-check">
-                    <label class="form-check-label text-muted">
-                      <input type="checkbox" class="form-check-input">
-                      Keep me signed in
-                    </label>
-                  </div>
-                  <a href="#" class="auth-link text-black">Forgot password?</a>
-                </div>
-                <div class="text-center mt-4 font-weight-light">
-                  Don't have an account? <a href="register.html" class="text-primary">Create</a>
-                </div>
+
+                
               </form>
 
             </div>
@@ -140,7 +137,7 @@ ob_end_flush();
   </div>
   <!-- container-scroller -->
   <!-- plugins:js -->
-  <script src=".vendors/js/vendor.bundle.base.js"></script>
+  <script src="vendors/js/vendor.bundle.base.js"></script>
   <!-- inject:js -->
   <script src="js/off-canvas.js"></script>
   <script src="js/hoverable-collapse.js"></script>
@@ -148,6 +145,17 @@ ob_end_flush();
   <script src="js/settings.js"></script>
   <script src="js/todolist.js"></script>
   <!-- endinject -->
+
+  <script>
+    function togglePassword() {
+      var passwordInput = document.getElementById("password");
+      if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+      } else {
+        passwordInput.type = "password";
+      }
+    }
+  </script>
 </body>
 
 </html>
