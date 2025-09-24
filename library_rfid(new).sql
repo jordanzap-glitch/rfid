@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 24, 2025 at 07:09 AM
+-- Generation Time: Sep 24, 2025 at 07:16 AM
 -- Server version: 12.0.2-MariaDB
 -- PHP Version: 8.2.12
 
@@ -85,6 +85,26 @@ INSERT INTO `tbl_books` (`id`, `title`, `description`, `genre_id`, `status`, `da
 (11, 'Developing your Personality', ' A book on developing your personality is that it serves as a practical guide to cultivating and expressing one\'s unique personality in daily life, focusing on self-awareness, self-confidence, communication skills, and personal growth through exercises and real-life examples.\r\n', 3, 'available', '2025-09-06'),
 (12, 'Sariling Wika at Pilosopiyang Filipino ', 'Centers on the critical role of the native language, particularly Filipino, in the development of a distinct and authentic Filipino philosophy. It emphasizes that the use of the national language is not merely a linguistic choice but a vital mechanism for intellectual and cultural empowerment, enabling the expression of complex ideas, truth, and reality in a way that is deeply rooted in the Filipino experience.', 4, 'available', '2025-09-06'),
 (13, 'test', 'test', 7, 'unavailable', '2025-09-06');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_customuser`
+--
+
+CREATE TABLE `tbl_customuser` (
+  `id` int(10) NOT NULL,
+  `username` varchar(50) DEFAULT NULL,
+  `password` varchar(50) DEFAULT NULL,
+  `status` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_customuser`
+--
+
+INSERT INTO `tbl_customuser` (`id`, `username`, `password`, `status`) VALUES
+(1, 'customuser', 'customuser', NULL);
 
 -- --------------------------------------------------------
 
@@ -270,6 +290,12 @@ ALTER TABLE `tbl_books`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `tbl_customuser`
+--
+ALTER TABLE `tbl_customuser`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `tbl_genre`
 --
 ALTER TABLE `tbl_genre`
@@ -333,6 +359,12 @@ ALTER TABLE `tbl_attendance`
 --
 ALTER TABLE `tbl_books`
   MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
+-- AUTO_INCREMENT for table `tbl_customuser`
+--
+ALTER TABLE `tbl_customuser`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `tbl_genre`
