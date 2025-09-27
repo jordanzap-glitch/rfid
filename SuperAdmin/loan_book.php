@@ -103,9 +103,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['borrow'])) {
                     $book_id = mysqli_real_escape_string($conn, $book_id);
 
                     // Insert into tbl_rfid_loan
-                    // We'll insert the UID and borrower_id (works for student/regular)
-                    $insert = "INSERT INTO tbl_rfid_loan (uid, student_id, book_id, status, borrow_date) 
-                               VALUES ('$uid', '$borrower_id', '$book_id', 'borrowed', NOW())";
+                    if ($source_table === 'tbl_students') {
+                        $insert = "INSERT INTO tbl_rfid_loan (uid, student_id, book_id, status, borrow_date) 
+                                   VALUES ('$uid', '$borrower_id', '$book_id', 'borrowed', NOW())";
+                    } else { // tbl_regulars
+                        $insert = "INSERT INTO tbl_rfid_loan (uid, regulars_id, book_id, status, borrow_date) 
+                                   VALUES ('$uid', '$borrower_id', '$book_id', 'borrowed', NOW())";
+                    }
 
                     if (mysqli_query($conn, $insert)) {
                         // Update tbl_books to unavailable

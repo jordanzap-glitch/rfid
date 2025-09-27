@@ -7,13 +7,30 @@ if (isset($_GET['uid'])) {
     header('Content-Type: application/json');
     $uid = mysqli_real_escape_string($conn, $_GET['uid']);
 
-    // Look for user in both tables
-    $tables = ['tbl_regulars', 'tbl_students'];
     $userFound = false;
     $userData = [];
+    $userType = ""; // student or regular
+    $userId = null;
 
-    foreach ($tables as $table) {
-        $query = "SELECT id, firstname, lastname, image_path FROM $table WHERE uid='$uid' LIMIT 1";
+    // 🔹 Check students table
+    $query = "SELECT id, firstname, lastname, image_path FROM tbl_students WHERE uid='$uid' LIMIT 1";
+    $result = mysqli_query($conn, $query);
+    if ($result && mysqli_num_rows($result) > 0) {
+        $row = mysqli_fetch_assoc($result);
+        $userData = [
+            'id' => $row['id'],
+            'firstname' => $row['firstname'],
+            'lastname' => $row['lastname'],
+            'image_path' => $row['image_path'] ?: 'default.png'
+        ];
+        $userId = $row['id'];
+        $userType = "student";
+        $userFound = true;
+    }
+
+    // 🔹 If not student, check regulars
+    if (!$userFound) {
+        $query = "SELECT id, firstname, lastname, image_path FROM tbl_regulars WHERE uid='$uid' LIMIT 1";
         $result = mysqli_query($conn, $query);
         if ($result && mysqli_num_rows($result) > 0) {
             $row = mysqli_fetch_assoc($result);
@@ -21,35 +38,60 @@ if (isset($_GET['uid'])) {
                 'id' => $row['id'],
                 'firstname' => $row['firstname'],
                 'lastname' => $row['lastname'],
-                'image_path' => $row['image_path'] ?: 'default.png' // fallback image if null
+                'image_path' => $row['image_path'] ?: 'default.png'
             ];
+            $userId = $row['id'];
+            $userType = "regular";
             $userFound = true;
-            break;
         }
     }
 
     // Proceed only if user is found
     if ($userFound) {
-        $userId = $userData['id'];
         $today = date('Y-m-d');
         $currentStatus = 'In';
 
-        $attQuery = "SELECT id, status FROM tbl_attendance WHERE user_id='$userId' AND DATE(time_in)='$today' ORDER BY time_in DESC LIMIT 1";
+        // Build condition depending on user type
+        if ($userType === "student") {
+            $attQuery = "SELECT id, status FROM tbl_attendance 
+                         WHERE student_id='$userId' AND DATE(time_in)='$today' 
+                         ORDER BY time_in DESC LIMIT 1";
+        } else {
+            $attQuery = "SELECT id, status FROM tbl_attendance 
+                         WHERE regulars_id='$userId' AND DATE(time_in)='$today' 
+                         ORDER BY time_in DESC LIMIT 1";
+        }
+
         $attResult = mysqli_query($conn, $attQuery);
 
         if ($attResult && mysqli_num_rows($attResult) > 0) {
             $attRow = mysqli_fetch_assoc($attResult);
             if ($attRow['status'] === 'In') {
+                // 🔹 Update existing row -> mark as Out
                 $updateQuery = "UPDATE tbl_attendance SET time_out=NOW(), status='Out' WHERE id={$attRow['id']}";
                 mysqli_query($conn, $updateQuery);
                 $currentStatus = 'Out';
             } else {
-                $insertQuery = "INSERT INTO tbl_attendance (user_id, time_in, status) VALUES ('$userId', NOW(), 'In')";
+                // 🔹 Insert new row as In
+                if ($userType === "student") {
+                    $insertQuery = "INSERT INTO tbl_attendance (student_id, time_in, status) 
+                                    VALUES ('$userId', NOW(), 'In')";
+                } else {
+                    $insertQuery = "INSERT INTO tbl_attendance (regulars_id, time_in, status) 
+                                    VALUES ('$userId', NOW(), 'In')";
+                }
                 mysqli_query($conn, $insertQuery);
                 $currentStatus = 'In';
             }
         } else {
-            $insertQuery = "INSERT INTO tbl_attendance (user_id, time_in, status) VALUES ('$userId', NOW(), 'In')";
+            // 🔹 First attendance for today
+            if ($userType === "student") {
+                $insertQuery = "INSERT INTO tbl_attendance (student_id, time_in, status) 
+                                VALUES ('$userId', NOW(), 'In')";
+            } else {
+                $insertQuery = "INSERT INTO tbl_attendance (regulars_id, time_in, status) 
+                                VALUES ('$userId', NOW(), 'In')";
+            }
             mysqli_query($conn, $insertQuery);
             $currentStatus = 'In';
         }

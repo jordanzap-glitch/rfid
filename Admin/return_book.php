@@ -75,11 +75,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['uid']) && !isset($_POS
 
         // Fetch all active loans (status borrowed) for that borrower id (works for students or regulars)
         $borrower_id = $student['id'];
-        $loanSql = "SELECT l.id AS loan_id, l.book_id, l.borrow_date, b.title
-                    FROM tbl_rfid_loan l
-                    JOIN tbl_books b ON l.book_id = b.id
-                    WHERE l.student_id = '$borrower_id' AND l.status = 'borrowed'
-                    ORDER BY l.borrow_date ASC";
+        if ($student['source_table'] === 'tbl_students') {
+            $loanSql = "SELECT l.id AS loan_id, l.book_id, l.borrow_date, b.title
+                        FROM tbl_rfid_loan l
+                        JOIN tbl_books b ON l.book_id = b.id
+                        WHERE l.student_id = '$borrower_id' AND l.status = 'borrowed'
+                        ORDER BY l.borrow_date ASC";
+        } else {
+            $loanSql = "SELECT l.id AS loan_id, l.book_id, l.borrow_date, b.title
+                        FROM tbl_rfid_loan l
+                        JOIN tbl_books b ON l.book_id = b.id
+                        WHERE l.regulars_id = '$borrower_id' AND l.status = 'borrowed'
+                        ORDER BY l.borrow_date ASC";
+        }
+
         $loanResult = mysqli_query($conn, $loanSql);
         if ($loanResult && mysqli_num_rows($loanResult) > 0) {
             while ($row = mysqli_fetch_assoc($loanResult)) {
@@ -109,10 +118,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['return'])) {
             if ($loanResult && mysqli_num_rows($loanResult) > 0) {
                 $loanRow = mysqli_fetch_assoc($loanResult);
                 $book_id = $loanRow['book_id'];
-                $student_id = $loanRow['student_id'];
 
-                // Save borrower id (they should all be same borrower)
-                $processedBorrowerId = $student_id;
+                // Save borrower id (student_id or regulars_id)
+                $processedBorrowerId = !empty($loanRow['student_id']) ? $loanRow['student_id'] : $loanRow['regulars_id'];
 
                 // Update loan status to returned
                 $updateLoan = "UPDATE tbl_rfid_loan SET status = 'returned', return_date = NOW() WHERE id = '$loan_id'";
@@ -126,7 +134,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['return'])) {
 
         if ($processedBorrowerId !== null) {
             // Determine whether this borrower id belongs to tbl_students or tbl_regulars by checking uid
-            // We already have $uid, so find the borrower record again to know source table
             $borrowerAfter = findBorrowerByUid($conn, $uid);
 
             if ($borrowerAfter) {
@@ -134,7 +141,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['return'])) {
                 $idToUpdate = $borrowerAfter['id'];
 
                 // Check if borrower still has active loans
-                $checkSql = "SELECT COUNT(*) AS cnt FROM tbl_rfid_loan WHERE student_id = '$idToUpdate' AND status = 'borrowed'";
+                if ($source === 'tbl_students') {
+                    $checkSql = "SELECT COUNT(*) AS cnt FROM tbl_rfid_loan WHERE student_id = '$idToUpdate' AND status = 'borrowed'";
+                } else {
+                    $checkSql = "SELECT COUNT(*) AS cnt FROM tbl_rfid_loan WHERE regulars_id = '$idToUpdate' AND status = 'borrowed'";
+                }
                 $checkResult = mysqli_query($conn, $checkSql);
                 $countRow = mysqli_fetch_assoc($checkResult);
 
@@ -232,19 +243,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['return'])) {
                   <?php if ($student): ?>
                     <div class="d-flex align-items-center mb-4">
                       <?php
-                      // ✅ Default image handling
+                      // ✅ Image handling (tbl_students or tbl_regulars)
                       $imgSrc = '../img/defaulticon.png';
-                      if (!empty($borrower['image_path'])) {
-                          if (strpos($borrower['image_path'], '/') === false && file_exists('../uploads/' . $borrower['image_path'])) {
-                              $imgSrc = '../uploads/' . $borrower['image_path'];
-                          } elseif (file_exists($borrower['image_path'])) {
-                              $imgSrc = $borrower['image_path'];
-                          } elseif (file_exists('../uploads/' . $borrower['image_path'])) {
-                              $imgSrc = '../uploads/' . $borrower['image_path'];
+                      if (!empty($student['image_path'])) {
+                          $candidatePath = '../uploads/' . $student['image_path'];
+                          if (file_exists($candidatePath)) {
+                              $imgSrc = $candidatePath;
                           }
                       }
-                    ?>
-                      <img src="<?php echo htmlspecialchars($photoPath); ?>" 
+                      ?>
+                      <img src="<?php echo htmlspecialchars($imgSrc); ?>" 
                         alt="Profile Photo" class="profile-img me-4 border border-3 border-primary shadow-sm">
 
                       <div class="text-start">
